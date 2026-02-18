@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAF — Simple as F** Calorie Tracker</title>
+  <meta name="description" content="Track calories with AI. No bloat. No subscriptions. Just results.">
+  <meta property="og:title" content="SAF — Simple as F** Calorie Tracker">
+  <meta property="og:description" content="Track calories with AI. No bloat. No subscriptions. Just results.">
+  <meta property="og:image" content="saf-logo-1024.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="saf-logo-1024.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Custom Properties ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #111111;
+      --bg-elevated: #161616;
+      --bg-card: rgba(255,255,255,0.03);
+      --border-card: rgba(255,255,255,0.06);
+      --accent: #FF6B35;
+      --accent-glow: rgba(255,107,53,0.15);
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ── Sticky Nav ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(17,17,17,0.8);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    .nav-logo { height: 36px; width: auto; }
+
+    .nav-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+    }
+
+    .nav-download:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 80px;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 500px;
+      height: 500px;
+      transform: translate(-50%, -55%);
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-glow { animation: glow-pulse 4s ease-in-out infinite; }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -55%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -55%) scale(1.15); }
+    }
+
+    .hero-logo {
+      position: relative;
+      z-index: 1;
+      width: clamp(200px, 40vw, 380px);
+      height: auto;
+      margin-bottom: 48px;
+    }
+
+    .hero-logo rect {
+      transform-box: fill-box;
+    }
+
+    /* Logo rect animation classes */
+    .bar-h { transform-origin: 0% 50%; }
+    .bar-v { transform-origin: 50% 0%; }
+    .bar-accent { transform-origin: 50% 50%; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .bar-h { animation: scale-x 0.4s var(--ease-out) both; }
+      .bar-v { animation: scale-y 0.4s var(--ease-out) both; }
+      .bar-accent { animation: scale-spring 0.6s var(--ease-spring) both; }
+    }
+
+    @keyframes scale-x {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    @keyframes scale-y {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+    @keyframes scale-spring {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 8vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .light { font-weight: 300; }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 400;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .app-store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: #fff;
+      color: #000;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 14px;
+      transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease;
+    }
+
+    .app-store-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(255,255,255,0.1);
+    }
+
+    .app-store-btn svg { width: 22px; height: 22px; }
+
+    /* Fade-slide-up for hero text elements */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in {
+        opacity: 0;
+        transform: translateY(24px);
+        animation: fade-slide-up 0.7s var(--ease-out) both;
+      }
+    }
+
+    @keyframes fade-slide-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Section Shared ── */
+    .section {
+      padding: 120px 20px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin-bottom: 64px;
+      line-height: 1.15;
+    }
+
+    /* ── Features Grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 36px 32px;
+      transition: border-color 0.3s ease, transform 0.3s var(--ease-out);
+    }
+
+    .feature-card:hover {
+      border-color: rgba(255,107,53,0.15);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── How It Works ── */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step {
+      text-align: center;
+      max-width: 280px;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 0 auto 16px;
+    }
+
+    .step h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .step-connector {
+      width: 2px;
+      height: 48px;
+      border-left: 2px dashed var(--border-card);
+      margin: 0 auto;
+    }
+
+    /* ── Bold Statement ── */
+    .statement {
+      background: var(--bg-elevated);
+      padding: 120px 20px;
+      text-align: center;
+    }
+
+    .statement-text {
+      font-size: clamp(24px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.2;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      width: 64px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .footer-tagline {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 40px;
+    }
+
+    /* ── Scroll Reveal ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Responsive: 640px ── */
+    @media (min-width: 640px) {
+      .nav { padding: 16px 32px; }
+      .section { padding: 140px 32px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .hero { padding: 140px 32px 100px; }
+      .statement { padding: 140px 32px; }
+    }
+
+    /* ── Responsive: 1024px ── */
+    @media (min-width: 1024px) {
+      .nav { padding: 16px 48px; }
+      .section { padding: 160px 48px; }
+      .features-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .hero { padding: 160px 48px 120px; }
+      .statement { padding: 160px 48px; }
+
+      .steps-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0;
+      }
+
+      .step-connector {
+        width: 80px;
+        height: 2px;
+        border-left: none;
+        border-top: 2px dashed var(--border-card);
+        margin: 28px 0 0 0;
+        flex-shrink: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── Nav ── -->
+  <nav class="nav" id="nav">
+    <svg class="nav-logo" viewBox="72 260 880 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SAF logo">
+      <!-- S -->
+      <rect x="97" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="97" y="282" width="76" height="268" fill="#fff"/>
+      <rect x="97" y="474" width="250" height="76" fill="#fff"/>
+      <rect x="271" y="474" width="76" height="268" fill="#fff"/>
+      <rect x="97" y="666" width="250" height="76" fill="#fff"/>
+      <!-- A -->
+      <rect x="387" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="387" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="561" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="463" y="474" width="98" height="76" fill="#FF6B35"/>
+      <!-- F -->
+      <rect x="677" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="677" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="677" y="474" width="180" height="76" fill="#fff"/>
+    </svg>
+
+    <a href="#" class="nav-download">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v10M4 7l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Download
+    </a>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+
+    <!-- Animated Logo -->
+    <svg class="hero-logo" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SAF logo animation" role="img">
+      <!-- S -->
+      <rect x="97"  y="282" width="250" height="76"  fill="#fff" class="bar-h" style="animation-delay:0s"/>
+      <rect x="97"  y="282" width="76"  height="268" fill="#fff" class="bar-v" style="animation-delay:0.08s"/>
+      <rect x="97"  y="474" width="250" height="76"  fill="#fff" class="bar-h" style="animation-delay:0.16s"/>
+      <rect x="271" y="474" width="76"  height="268" fill="#fff" class="bar-v" style="animation-delay:0.24s"/>
+      <rect x="97"  y="666" width="250" height="76"  fill="#fff" class="bar-h" style="animation-delay:0.32s"/>
+      <!-- A -->
+      <rect x="387" y="282" width="250" height="76"  fill="#fff" class="bar-h" style="animation-delay:0.40s"/>
+      <rect x="387" y="282" width="76"  height="460" fill="#fff" class="bar-v" style="animation-delay:0.48s"/>
+      <rect x="561" y="282" width="76"  height="460" fill="#fff" class="bar-v" style="animation-delay:0.56s"/>
+      <rect x="463" y="474" width="98"  height="76"  fill="#FF6B35" class="bar-accent" style="animation-delay:0.64s"/>
+      <!-- F -->
+      <rect x="677" y="282" width="76"  height="460" fill="#fff" class="bar-v" style="animation-delay:0.72s"/>
+      <rect x="677" y="282" width="250" height="76"  fill="#fff" class="bar-h" style="animation-delay:0.80s"/>
+      <rect x="677" y="474" width="180" height="76"  fill="#fff" class="bar-h" style="animation-delay:0.88s"/>
+    </svg>
+
+    <div class="hero-text">
+      <h1 class="hero-title fade-in" style="animation-delay:1.3s">
+        Simple as F**<br><span class="light">Calorie Tracker</span>
+      </h1>
+      <p class="hero-subtitle fade-in" style="animation-delay:1.5s">
+        Track calories with AI. No bloat. Just results.
+      </p>
+      <a href="#" class="app-store-btn fade-in" style="animation-delay:1.7s">
+        <svg viewBox="0 0 22 22" fill="none"><path d="M15.77 11.64c-.02-2.1 1.71-3.12 1.79-3.17-1-1.44-2.52-1.64-3.05-1.66-1.28-.14-2.54.77-3.2.77-.67 0-1.67-.75-2.76-.73a4.07 4.07 0 0 0-3.42 2.1c-1.48 2.55-.38 6.3 1.04 8.37.71 1.01 1.55 2.14 2.64 2.1 1.07-.04 1.47-.68 2.76-.68 1.28 0 1.64.68 2.75.66 1.14-.02 1.87-1.02 2.55-2.04a8.92 8.92 0 0 0 1.16-2.38c-.02-.01-2.24-.86-2.26-3.34z" fill="currentColor"/><path d="M13.68 5.12a3.28 3.28 0 0 0 .75-2.35 3.34 3.34 0 0 0-2.17 1.12 3.13 3.13 0 0 0-.77 2.27c.82.06 1.66-.38 2.19-1.04z" fill="currentColor"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section class="section">
+    <h2 class="section-title reveal">Everything you need.<br>Nothing you don't.</h2>
+    <div class="features-grid">
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 34V14a4 4 0 0 1 4-4h10l2 4h12a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z"/>
+          <circle cx="24" cy="24" r="4"/>
+          <path d="M20 16h8"/>
+        </svg>
+        <h3>AI-Powered Logging</h3>
+        <p>Just type "3 eggs and toast" and our AI figures out the rest. Calories, protein, carbs, fat — done.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <rect x="8" y="8" width="4" height="32" rx="1"/>
+          <rect x="15" y="8" width="2" height="32" rx="1"/>
+          <rect x="20" y="8" width="4" height="32" rx="1"/>
+          <rect x="28" y="8" width="2" height="32" rx="1"/>
+          <rect x="33" y="8" width="4" height="32" rx="1"/>
+          <rect x="40" y="8" width="2" height="32" rx="1"/>
+        </svg>
+        <h3>Barcode Scanner</h3>
+        <p>Point your camera at any barcode. Instant nutrition lookup from a database of millions of products.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="18"/>
+          <circle cx="24" cy="24" r="11"/>
+          <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
+        </svg>
+        <h3>Smart Goals</h3>
+        <p>Personalized daily calorie targets based on your body, activity level, and weight goals. Science, not guessing.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6,36 14,28 22,32 30,18 38,22 44,12"/>
+          <circle cx="44" cy="12" r="3" fill="currentColor" stroke="none"/>
+        </svg>
+        <h3>Weight Tracking</h3>
+        <p>Log your weight with one tap. Beautiful charts show your progress over time with projected milestones.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 42s-16-9.2-16-21.6C8 13.6 12.5 8 18 8a8.4 8.4 0 0 1 6 2.8A8.4 8.4 0 0 1 30 8c5.5 0 10 5.6 10 12.4C40 32.8 24 42 24 42z"/>
+        </svg>
+        <h3>HealthKit Sync</h3>
+        <p>Pulls your height, weight, age, and sex directly from Apple Health. No manual data entry needed.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="8" width="32" height="32" rx="4"/>
+          <line x1="16" y1="24" x2="32" y2="24"/>
+        </svg>
+        <h3>Stripped to the Essentials</h3>
+        <p>No clutter. No features nobody asked for. Just a clean, simple tracker that does exactly what you need.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── How It Works ── -->
+  <section class="section">
+    <h2 class="section-title reveal">Three steps. That's it.</h2>
+    <div class="steps-container">
+
+      <div class="step reveal">
+        <div class="step-number">1</div>
+        <h3>Tell us about you</h3>
+        <p>Quick onboarding sets your personalized calorie goal in under a minute.</p>
+      </div>
+
+      <div class="step-connector" aria-hidden="true"></div>
+
+      <div class="step reveal">
+        <div class="step-number">2</div>
+        <h3>Log your meals</h3>
+        <p>Type it, scan it, or enter it manually. Three ways, all fast.</p>
+      </div>
+
+      <div class="step-connector" aria-hidden="true"></div>
+
+      <div class="step reveal">
+        <div class="step-number">3</div>
+        <h3>Watch it work</h3>
+        <p>Track your streaks, see your weight trend, hit your goals.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Bold Statement ── -->
+  <section class="statement">
+    <p class="statement-text reveal">
+      Calorie tracking shouldn't feel like a second job.
+    </p>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <svg class="footer-logo" viewBox="72 260 880 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SAF">
+      <rect x="97" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="97" y="282" width="76" height="268" fill="#fff"/>
+      <rect x="97" y="474" width="250" height="76" fill="#fff"/>
+      <rect x="271" y="474" width="76" height="268" fill="#fff"/>
+      <rect x="97" y="666" width="250" height="76" fill="#fff"/>
+      <rect x="387" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="387" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="561" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="463" y="474" width="98" height="76" fill="#FF6B35"/>
+      <rect x="677" y="282" width="76" height="460" fill="#fff"/>
+      <rect x="677" y="282" width="250" height="76" fill="#fff"/>
+      <rect x="677" y="474" width="180" height="76" fill="#fff"/>
+    </svg>
+    <p class="footer-tagline">Simple as F** Calorie Tracker</p>
+    <a href="#" class="app-store-btn">
+      <svg viewBox="0 0 22 22" fill="none"><path d="M15.77 11.64c-.02-2.1 1.71-3.12 1.79-3.17-1-1.44-2.52-1.64-3.05-1.66-1.28-.14-2.54.77-3.2.77-.67 0-1.67-.75-2.76-.73a4.07 4.07 0 0 0-3.42 2.1c-1.48 2.55-.38 6.3 1.04 8.37.71 1.01 1.55 2.14 2.64 2.1 1.07-.04 1.47-.68 2.76-.68 1.28 0 1.64.68 2.75.66 1.14-.02 1.87-1.02 2.55-2.04a8.92 8.92 0 0 0 1.16-2.38c-.02-.01-2.24-.86-2.26-3.34z" fill="currentColor"/><path d="M13.68 5.12a3.28 3.28 0 0 0 .75-2.35 3.34 3.34 0 0 0-2.17 1.12 3.13 3.13 0 0 0-.77 2.27c.82.06 1.66-.38 2.19-1.04z" fill="currentColor"/></svg>
+      Download on the App Store
+    </a>
+    <p class="footer-note">Made with zero third-party dependencies.</p>
+  </footer>
+
+  <script>
+    // ── Nav scroll state ──
+    const nav = document.getElementById('nav');
+    let ticking = false;
+
+    function updateNav() {
+      if (window.scrollY > 40) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(updateNav);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // ── Scroll reveal with IntersectionObserver ──
+    const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+    if (motionOk) {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            // Stagger siblings in same parent
+            const parent = entry.target.parentElement;
+            const siblings = Array.from(parent.querySelectorAll('.reveal'));
+            const index = siblings.indexOf(entry.target);
+            entry.target.style.transitionDelay = (index * 0.08) + 's';
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      reveals.forEach(function(el) { observer.observe(el); });
+    }
+  </script>
+</body>
+</html>
