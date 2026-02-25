@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — SAF Calorie Tracker</title>
+  <meta name="description" content="Privacy Policy for SAF Calorie Tracker.">
+  <link rel="icon" type="image/png" href="saf-logo-1024.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #090E09;
+      --bg-elevated: #0C120C;
+      --bg-card: rgba(82,194,52,0.05);
+      --border-card: rgba(82,194,52,0.13);
+      --accent: #3DB022;
+      --accent-bright: #52C234;
+      --accent-glow: rgba(82,194,52,0.20);
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(82,194,52,0.10) 0%, transparent 60%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(9,14,9,0.88);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      box-shadow: 0 0 14px rgba(82,194,52,0.45);
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .nav-logo-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-bright);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-back:hover { opacity: 0.75; }
+
+    /* ── Content ── */
+    .page-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 120px 24px 96px;
+    }
+
+    .page-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .page-meta {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 56px;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    li {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .highlight-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      color: var(--text-secondary);
+    }
+
+    .highlight-box strong {
+      color: var(--accent-bright);
+    }
+
+    strong { color: var(--text-primary); }
+
+    a {
+      color: var(--accent-bright);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border-card);
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--text-tertiary);
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover { color: var(--accent-bright); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="saf-logo-1024.png" alt="SAF Logo" class="nav-logo-img">
+      <span class="nav-logo-name">SAF</span>
+    </a>
+    <a href="index.html" class="nav-back">
+      ← Back to Home
+    </a>
+  </nav>
+
+  <main class="page-wrap">
+    <span class="page-label">Legal</span>
+    <h1 class="page-title">Privacy Policy</h1>
+    <p class="page-meta">Last updated: February 25, 2026</p>
+
+    <div class="highlight-box">
+      <p><strong>The short version:</strong> SAF Calorie Tracker is built with your privacy in mind. Your food logs, weight data, and health metrics live on your device and iCloud — never on our servers. We don't sell your data. We don't run ads. We don't track you.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">1. Who We Are</h2>
+      <p>SAF Calorie Tracker ("SAF", "we", "us", or "our") is an iOS app developed by Deviify. Our app helps you track calories, log meals, and monitor your weight — simply and without noise.</p>
+      <p>If you have any questions about this Privacy Policy, contact us at: <a href="mailto:privacy@deviify.com">privacy@deviify.com</a></p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">2. Data We Collect</h2>
+      <p>We collect only what is necessary to provide you with a personalised calorie tracking experience.</p>
+
+      <p><strong>Account Information</strong></p>
+      <p>When you sign in with Apple, we receive your name and email address from Apple and store them in our authentication backend (Supabase). This is the only data stored on our servers.</p>
+
+      <p><strong>Profile & Body Metrics (stored locally & synced via iCloud)</strong></p>
+      <ul>
+        <li>Biological sex, age, height, current weight, target weight</li>
+        <li>Activity level and weight goal preference</li>
+        <li>Daily calorie goal</li>
+      </ul>
+      <p>This data is stored on your device using iCloud Key-Value Store for sync across your own devices. It is not accessible to us.</p>
+
+      <p><strong>Food & Weight Logs (stored locally & synced via iCloud)</strong></p>
+      <ul>
+        <li>Food entries (name, calories, macros, meal type, timestamp, source)</li>
+        <li>Text input you type for AI calorie estimation</li>
+        <li>Barcodes scanned for food lookup</li>
+        <li>Weight entries (value and timestamp)</li>
+        <li>Saved meals and favourite foods</li>
+      </ul>
+      <p>All food and weight logs are stored in a local SwiftData database on your device, synced via Apple CloudKit to your personal iCloud account. We cannot access this data.</p>
+
+      <p><strong>Health Data (via Apple HealthKit)</strong></p>
+      <p>With your permission, we read biological sex, date of birth, height, and body weight from Apple Health to pre-fill your profile. We write weight entries back to Apple Health to keep your records in sync. HealthKit data is never shared with third parties or sent to our servers.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">3. How We Use Your Data</h2>
+      <ul>
+        <li><strong>To calculate your personalised calorie goal</strong> using the Mifflin-St Jeor BMR formula</li>
+        <li><strong>To power AI calorie estimation</strong> — your text input is sent to our private AI API to estimate calories and macros. This data is used solely to process your request and is not stored or used for model training.</li>
+        <li><strong>To look up food barcodes</strong> via the Open Food Facts public database</li>
+        <li><strong>To authenticate your account</strong> via Supabase and Apple Sign-In</li>
+        <li><strong>To check the app version</strong> so we can notify you of required updates</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">4. Data Sharing & Third Parties</h2>
+      <p>We do not sell, rent, or share your personal data with advertisers or data brokers. Period.</p>
+      <p>The limited third-party services we use:</p>
+      <ul>
+        <li><strong>Supabase</strong> — authentication and user account management. Only your name and email are stored. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
+        <li><strong>Open Food Facts</strong> — a public, open-source food database used for barcode lookups. No personal data is sent. <a href="https://world.openfoodfacts.org/privacy" target="_blank" rel="noopener">Open Food Facts Privacy Policy</a></li>
+        <li><strong>Apple CloudKit / iCloud</strong> — syncs your food logs and settings across your devices. Governed by Apple's privacy policy.</li>
+        <li><strong>Apple HealthKit</strong> — reads and writes health data on your device only.</li>
+      </ul>
+      <p>We have no analytics SDKs, no ad networks, no crash reporting tools, and no third-party trackers integrated into the app.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">5. Data Retention & Deletion</h2>
+      <p>Your food logs and health data exist on your device and iCloud. You can delete individual entries at any time within the app. Deleting the app removes all local data.</p>
+      <p>To delete your account and all associated authentication data (name and email) from our servers, contact us at <a href="mailto:privacy@deviify.com">privacy@deviify.com</a> and we will process your request within 30 days.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">6. Children's Privacy</h2>
+      <p>SAF Calorie Tracker is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us and we will delete it promptly.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">7. Security</h2>
+      <p>We take security seriously. All communication with our servers is encrypted via HTTPS. Apple Sign-In uses industry-standard OAuth 2.0 with nonce-based verification. Sensitive API keys are never hardcoded in the app. Your local data is protected by iOS platform encryption.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">8. Your Rights</h2>
+      <p>Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, contact us at <a href="mailto:privacy@deviify.com">privacy@deviify.com</a>.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">9. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. If we make material changes, we will update the "Last updated" date at the top of this page. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">10. Contact</h2>
+      <p>Questions or concerns? Reach us at <a href="mailto:privacy@deviify.com">privacy@deviify.com</a>.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </p>
+    <p style="margin-top: 14px;">&copy; 2026 Deviify. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
